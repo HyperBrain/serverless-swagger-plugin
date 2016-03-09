@@ -1,0 +1,24 @@
+#
+# api.yaml
+# ========
+# Main level API definition.
+# This file contains all your defined resources and
+# references the specific endpoint definitions.
+#
+swagger: 2.0
+info:
+  version: ${apiVersion}
+  title: ${apiName}
+  description: ${apiDescription}
+  termsOfService: ${apiTerms}
+  contact:
+    name: ${apiContactName}
+    email: ${apiContactEmail}
+  license: 
+    name: ${apiLicense}
+host: ${apiHost}
+paths:
+definitions:
+  $ref: ./api/models.yaml
+parameters:
+  $ref: ./api/parameters.yaml
