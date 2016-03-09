@@ -5,7 +5,7 @@
     "node": ">=4.0"
   },
   "description": "Serverless plugin",
-  "author": "serverless.com",
+  "author": "Frank Schmid <fschmid740@googlemail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",

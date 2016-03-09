@@ -1,0 +1,18 @@
+#
+# API parameter definitions.
+# This file contains global parameter definitions that can
+# be references by the different endpoint definitions.
+#
+# Example
+# -------
+# someParam:
+#   name: some
+#   in: query
+#   description: This is a parameter
+#   required: true
+#   type: number
+#   format: double
+#
+# Reference this parameter with
+# - $ref: '#/parameters/someParam'
+# in your parameters definition
