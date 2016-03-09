@@ -1,0 +1,32 @@
+#
+# models.yaml
+#
+# Model definitions for your API. These models will be used
+# in generated SDKs as parameter types.
+#
+# Example
+# -------
+# dataResult:
+#   type: object
+#   properties:
+#     name:
+#       type: string
+#     birthday:
+#       type: string
+#       format: date-time
+#     height:
+#       type: integer
+#     locations:
+#       type: array
+#       items:
+#         $ref: '#/definitions/location'
+#
+# location:
+#   type: object
+#   properties:
+#     lat:
+#       type: number
+#       format: double
+#     lon:
+#       type: number
+#       format: double
