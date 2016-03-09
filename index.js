@@ -28,7 +28,7 @@ module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPl
    * ServerlessPluginBoilerplate
    */
 
-  class ServerlessPluginBoilerplate extends ServerlessPlugin {
+  class ServerlessSwaggerPlugin extends ServerlessPlugin {
 
     /**
      * Constructor
@@ -45,7 +45,7 @@ module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPl
      */
 
     static getName() {
-      return 'com.serverless.' + ServerlessPluginBoilerplate.name;
+      return 'com.serverless.' + ServerlessSwaggerPlugin.name;
     }
 
     /**
@@ -58,15 +58,29 @@ module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPl
 
     registerActions() {
 
-      this.S.addAction(this._customAction.bind(this), {
-        handler:       'customAction',
-        description:   'A custom action from a custom plugin',
-        context:       'custom',
-        contextAction: 'run',
+      this.S.addAction(this._swaggerInit.bind(this), {
+        handler:       'swaggerInit',
+        description:   'Initialize the Swagger based API definition',
+        context:       'swagger',
+        contextAction: 'init',
         options:       [{ // These must be specified in the CLI like this "-option true" or "-o true"
-          option:      'option',
-          shortcut:    'o',
-          description: 'test option 1'
+          option:      'force',
+          shortcut:    'f',
+          description: 'Force overwrite if API already exists. Use with caution!'
+        }],
+        parameters: [ // Use paths when you multiple values need to be input (like an array).  Input looks like this: "serverless custom run module1/function1 module1/function2 module1/function3.  Serverless will automatically turn this into an array and attach it to evt.options within your plugin
+        ]
+      });
+
+      this.S.addAction(this._swaggerInit.bind(this), {
+        handler:       'swaggerDeploy',
+        description:   'Deploy the Swagger based API definition',
+        context:       'swagger',
+        contextAction: 'deploy',
+        options:       [{ // These must be specified in the CLI like this "-option true" or "-o true"
+          option:      'all',
+          shortcut:    'a',
+          description: 'Deploy all resources and models'
         }],
         parameters: [ // Use paths when you multiple values need to be input (like an array).  Input looks like this: "serverless custom run module1/function1 module1/function2 module1/function3.  Serverless will automatically turn this into an array and attach it to evt.options within your plugin
           {
@@ -109,7 +123,7 @@ module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPl
      * - You can also access other Project-specific data @ this.S Again, if you mess with data on this object, it could break everything, so make sure you know what you're doing ;)
      */
 
-    _customAction(evt) {
+    _swaggerInit(evt) {
 
       let _this = this;
 
@@ -176,7 +190,7 @@ module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPl
   }
 
   // Export Plugin Class
-  return ServerlessPluginBoilerplate;
+  return ServerlessSwaggerPlugin;
 
 };
 
