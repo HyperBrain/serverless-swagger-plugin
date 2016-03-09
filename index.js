@@ -20,10 +20,11 @@
 
 module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPlugin Class
 
-  const path   = require('path'),
-     fs        = require('fs'),
-     BbPromise = require('bluebird'),
-     SwaggerInit = require('./lib/init');
+  const path = require('path')
+     , fs = require('fs')
+     , BbPromise = require('bluebird')
+     , SwaggerInit = require('./lib/init')
+     , NyT = require('./lib/nyt');
 
   /**
    * ServerlessPluginBoilerplate
@@ -73,7 +74,7 @@ module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPl
         ]
       });
 
-      this.S.addAction(this._swaggerInit.bind(this), {
+      this.S.addAction(this._swaggerNyT.bind(this), {
         handler:       'swaggerDeploy',
         description:   'Deploy the Swagger based API definition',
         context:       'swagger',
@@ -82,6 +83,30 @@ module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPl
           option:      'all',
           shortcut:    'a',
           description: 'Deploy all resources and models'
+        }],
+        parameters: [ // Use paths when you multiple values need to be input (like an array).  Input looks like this: "serverless custom run module1/function1 module1/function2 module1/function3.  Serverless will automatically turn this into an array and attach it to evt.options within your plugin
+          {
+            parameter: 'paths',
+            description: 'One or multiple paths to your function',
+            position: '0->' // Can be: 0, 0-2, 0->  This tells Serverless which params are which.  3-> Means that number and infinite values after it.
+          }
+        ]
+      });
+
+      this.S.addAction(this._swaggerNyT.bind(this), {
+        handler:       'swaggerSDK',
+        description:   'Create a client SDK from a deployed API',
+        context:       'swagger',
+        contextAction: 'sdk',
+        options:       [{
+          option:      'language',
+          shortcut:    'l',
+          description: 'Select SDK language. One of iOS, Android or JavaScript. Defaults to JavaScript.'
+        },
+        {
+          option:      'stage',
+          shortcut:    's',
+          description: 'Select stage.'
         }],
         parameters: [ // Use paths when you multiple values need to be input (like an array).  Input looks like this: "serverless custom run module1/function1 module1/function2 module1/function3.  Serverless will automatically turn this into an array and attach it to evt.options within your plugin
           {
@@ -123,6 +148,10 @@ module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPl
      * - The "evt" object contains Action-specific data.  You can add custom data to it, but if you change any data it will affect subsequent Actions and Hooks.
      * - You can also access other Project-specific data @ this.S Again, if you mess with data on this object, it could break everything, so make sure you know what you're doing ;)
      */
+
+    _swaggerNyT(evt) {
+      return NyT.bind(this)(evt);
+    }
 
     _swaggerInit(evt) {
        return SwaggerInit.bind(this)(evt);
