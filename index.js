@@ -20,9 +20,10 @@
 
 module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPlugin Class
 
-  const path    = require('path'),
-    fs        = require('fs'),
-    BbPromise = require('bluebird'); // Serverless uses Bluebird Promises and we recommend you do to because they provide more than your average Promise :)
+  const path   = require('path'),
+     fs        = require('fs'),
+     BbPromise = require('bluebird'),
+     SwaggerInit = require('./lib/init');
 
   /**
    * ServerlessPluginBoilerplate
@@ -124,6 +125,10 @@ module.exports = function(ServerlessPlugin) { // Always pass in the ServerlessPl
      */
 
     _swaggerInit(evt) {
+       return SwaggerInit.bind(this)(evt);
+    }
+
+    _swaggerDeploy(evt) {
 
       let _this = this;
 
